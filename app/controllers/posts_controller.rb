@@ -30,11 +30,11 @@ class PostsController < ApplicationController
 
 	def update
 		@post = Post.find(params[:id])
-		if @posts.update(post_params)
-			#flash[:notice] = "Post updated successfully"
+
+		if @post.update(params[:post].permit(:title, :body))
 			redirect_to @post
 		else
-			render("edit")
+			render 'edit'
 		end
 	end
 
@@ -43,9 +43,10 @@ class PostsController < ApplicationController
 	end
 
 	def destroy
-		@post = Post.find(params[:id]).destroy
-		flash[:notice] = "Post deleted successfully"
-		redirect_to(:action => "index") 
+		@post = Post.find(params[:id])
+		@post.destroy
+
+		redirect_to posts_path
 	end
 
 	private
